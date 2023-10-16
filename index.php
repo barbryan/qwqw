@@ -50,16 +50,11 @@ function fileInputs($file)
     throw new ErrorException("Invalid inputs");
   }
 
-  return $file;
-
   // Require the vendor/autoload.php file
   require __DIR__ . '/vendor/autoload.php';
 
   // Create a new instance of PhpOffice\PhpWord
   $phpWord = new \PhpOffice\PhpWord\PhpWord();
-
-  // Require the vendor/autoload.php file
-  require __DIR__ . '/dompdf/vendor/autoload.php';
 
   // Create a new instance of Dompdf
   $dompdf = new \Dompdf\Dompdf();
