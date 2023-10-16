@@ -1,4 +1,8 @@
 <?php
+use Dompdf\Dompdf;
+use PhpOffice\PhpWord\IOFactory;
+
+require_once(__DIR__ . '/vendor/autoload.php');
 
 // use \Dompdf\Dompdf;
 
@@ -57,7 +61,7 @@ function fileInputs($file)
   $phpWord = new \PhpOffice\PhpWord\PhpWord();
 
   // Create a new instance of Dompdf
-  $dompdf = new \Dompdf\Dompdf();
+  $dompdf = new Dompdf();
 
   // Define the upload directory and allowed file types
   $upload_dir = __DIR__ . "/uploads/";
@@ -89,7 +93,7 @@ function fileInputs($file)
       } else if ($file_ext == "png" || $file_ext == "jpg" || $file_ext == "jpeg") {
 
         // Create a new instance of Dompdf
-        $dompdf = new \Dompdf\Dompdf();
+        $dompdf = new Dompdf();
 
         // Load the HTML content from the image tag
         $html = "<img src='$upload_path'>";
@@ -112,21 +116,12 @@ function fileInputs($file)
         try {
 
           // Load the document from the file
-          $document = $phpWord->loadTemplate($upload_path);
+          $document = IOFactory::load($upload_path);
 
           // Save the document as an image using saveAsImage() method
           $image_path = $upload_dir . uniqid() . ".png";
-          $image_path = $document->saveAsImage($image_path);
-          //$document->saveAs($image_path);
-
-          // Create a new instance of Dompdf
-          $dompdf = new \Dompdf\Dompdf();
-
-          // Load the HTML content from the image tag
-          $html = "<img src='$image_path'>";
-
-          // Render the HTML as PDF using render() method
-          $dompdf->loadHtml($html);
+          $dompdf = new Dompdf();
+          $dompdf->loadHtml($document->getHtmlConverter()->convertToHtml());
           $dompdf->render();
 
           // Save the PDF to a new file
@@ -191,4 +186,6 @@ function fileli()
 
   // Output the PDF document to a file
   $pdf->Output('F', $pdfPath);
+
+  // require the necessary libraries
 }
