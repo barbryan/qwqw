@@ -61,7 +61,7 @@ function fileInputs($file)
 
   // Define the upload directory and allowed file types
   $upload_dir = __DIR__ . "/uploads/";
-  $allowed_types = array("pdf", "doc", "docx", "png", "jpeg");
+  $allowed_types = array("pdf", "doc", "docx", "png", "jpeg", "jpg");
 
   // Get the file name, size, and type
   $file_name = $file["name"];
@@ -86,8 +86,9 @@ function fileInputs($file)
 
         // No need to convert, just echo a success message
         return "The file " . $file_name . " was uploaded and saved as " . $new_name;
-      } else if ($file_ext == "png" || "jpeg" || "jpg") {
+      } else if ($file_ext == "png" || $file_ext == "jpg" || $file_ext == "jpeg") {
 
+        // Create a new instance of Dompdf
         $dompdf = new \Dompdf\Dompdf();
 
         // Load the HTML content from the image tag
@@ -104,13 +105,11 @@ function fileInputs($file)
         // Delete the original and image files
         unlink($upload_path);
 
+        // Echo a success message
         return "The file " . $file_name . " was uploaded and converted to PDF as " . basename($pdf_path);
-
-      } else if ($file_ext == "doc" || "docx") {
+      } else {
         // Convert the file to PDF using Dompdf
         try {
-
-          $document = new \PhpOffice\PhpWord\TemplateProcessor($upload_path);
 
           // Load the document from the file
           $document = $phpWord->loadTemplate($upload_path);
@@ -161,4 +160,35 @@ function fileInputs($file)
 
 
   // return $file;
+}
+
+
+function fileli()
+{
+  require('fpdf.php');
+
+  // Path to the image file
+  $imagePath = 'path/to/image.jpg';
+
+  // Path to the output PDF file
+  $pdfPath = 'path/to/output.pdf';
+
+  // Create a new FPDF object
+  //$pdf = new FPDF();
+
+  // Add a new page to the PDF document
+  $pdf->AddPage();
+
+  // Load the image into memory
+  $image = @imagecreatefromjpeg($imagePath);
+
+  // Get the width and height of the image
+  $width = imagesx($image);
+  $height = imagesy($image);
+
+  // Insert the image into the PDF document
+  $pdf->Image($imagePath, 0, 0, $width, $height);
+
+  // Output the PDF document to a file
+  $pdf->Output('F', $pdfPath);
 }

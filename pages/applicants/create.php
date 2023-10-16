@@ -11,7 +11,7 @@ if (isset($_POST['CREATE_APPLICANTS'])) {
     // $Course = toHtmlSpecailChars($_POST['Course']);
     // $dob = toHtmlSpecailChars($_POST['dob']);
     $resume = fileInputs($_FILES['resume']);
-    echo '<object data="./uploads/652ceccd5534e.pdf" type="" width="100" height="100"></object>';
+    // echo '<object data="./uploads/652ceccd5534e.pdf" type="" width="100" height="100"></object>';
     print_r($resume);
 
   } catch (Exception $ex) {
