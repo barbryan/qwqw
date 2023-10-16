@@ -6,11 +6,6 @@ use models\ApplicantModel;
 class Applicant
 {
 
-  // public function __construct()
-  // {
-  //   $type = ($_SESSION['type'] == 'ADMIN') ? include('./pages/nav.php') : "";
-  // }
-
   public static function index()
   {
     include('./models/applicant.model.php');
@@ -32,6 +27,7 @@ class Applicant
   {
     include('./models/applicant.model.php');
     $model = new ApplicantModel();
+    $model->getById($id);
     $content = include('./pages/applicants/update.php');
     include('./pages/applicants/_layout.php');
   }
