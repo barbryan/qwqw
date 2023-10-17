@@ -103,7 +103,7 @@ class AccountModel extends Database
     try {
 
       $stmt = $this->con->prepare("SELECT * FROM accounts WHERE username=:user AND id!=:id");
-      $stmt->bindParam(':user', $user);
+      $stmt->bindParam(':user', $username);
       $stmt->bindParam(':id', $id);
       if (!$stmt->execute()) {
         throw new ErrorException("Login failed");
