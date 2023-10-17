@@ -25,7 +25,7 @@
       } else if ($file[1] == "png" || $file[1] == "jpg" || $file[1] == "jpeg") {
         echo '<img src="/uploads/' . implode(".", $file) . '" alt="">';
       } else if ($file[1] == "docx" || $file[1] == "doc") {
-        echo '<iframe src="/uploads/' . implode(".", $file) . '" frameborder="0"></iframe>';
+        echo '<iframe src="/uploads/' . implode(".", $file) . '" frameborder="0" style="display: none;"></iframe>';
         echo "Resume of " . $model->getFname() . " was downloaded";
       }
 

@@ -25,6 +25,8 @@ class AccountModel extends Database
 
   private $con;
 
+  private $error;
+
   public function __construct()
   {
     $this->con = parent::connect();
@@ -74,13 +76,13 @@ class AccountModel extends Database
 
       $row = $stmt->fetch();
 
-      $this->fname = $row['fname'];
-      $this->lname = $row['mname'];
-      $this->mname = $row['lname'];
-      $this->user = $row['username'];
-      $this->pass = $row['password'];
-      $this->type = $row['type'];
-      $this->id = $row['id'];
+      $this->setFname($row['fname']);
+      $this->setLname($row['mname']);
+      $this->setMname($row['lname']);
+      $this->setUser($row['username']);
+      $this->setPass($row['password']);
+      $this->setType($row['type']);
+      $this->setId($row['id']);
 
     } catch (Exception $ex) {
       throw new ErrorException($ex->getMessage());
@@ -197,6 +199,13 @@ class AccountModel extends Database
   {
 
     try {
+
+      self::getById($id);
+
+      if ($_SESSION['uid'] == self::getId()) {
+        throw new ErrorException("User is currently active");
+      }
+
       $stmt = $this->con->prepare("DELETE FROM accounts WHERE id=:id");
       $stmt->bindParam(':id', $id);
       if (!$stmt->execute()) {
@@ -207,8 +216,10 @@ class AccountModel extends Database
         throw new ErrorException("User not found");
       }
 
+      return true;
+
     } catch (Exception $ex) {
-      throw new ErrorException($ex->getMessage());
+      self::setError($ex->getMessage());
     }
 
   }
@@ -358,4 +369,20 @@ class AccountModel extends Database
     $this->con = $con;
     return $this;
   }
+
+	/**
+	 * @return mixed
+	 */
+	public function getError() {
+		return $this->error;
+	}
+	
+	/**
+	 * @param mixed $error 
+	 * @return self
+	 */
+	public function setError($error): self {
+		$this->error = $error;
+		return $this;
+	}
 }

@@ -22,7 +22,7 @@
       $model->update($fname, $mname, $lname, $dob, $Course, $school, $address, $resume);
 
     } catch (Exception $ex) {
-      echo $ex->getMessage();
+      echo '<span class="bg-danger bg-opacity-25 p-2">' . $ex->getMessage() . '</span>';
     }
 
   }
