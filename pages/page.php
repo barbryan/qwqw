@@ -77,6 +77,15 @@ class Page
           $this->page::delete($url[3]);
           break;
 
+        case "view":
+          if (empty($url[3])) {
+            //$this->page::index();
+            header("location: /error");
+            exit();
+          }
+          $this->page::view($url[3]);
+          break;
+
         default:
           $this->page::index();
           break;

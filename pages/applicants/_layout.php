@@ -16,12 +16,15 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
   <style>
+    html {
+      min-width: 1200px;;
+    }
     body {
       position: relative;
 
       min-height: 100vh;
-      padding: 1rem;
-      overflow: hidden;
+      /* padding: 1rem; */
+      overflow: auto;
 
       display: grid;
       grid-template:

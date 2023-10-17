@@ -1,34 +1,38 @@
-<?php
+<main style="
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;">
 
-if (isset($_POST['UPDATE_APPLICANTS'])) {
+  <?php
 
-  try {
+  if (isset($_POST['UPDATE_APPLICANTS'])) {
 
-    $name = toHtmlSpecailChars($_POST['fname']);
-    $mname = toHtmlSpecailChars($_POST['mname']);
-    $lname = toHtmlSpecailChars($_POST['lname']);
-    $address = toHtmlSpecailChars($_POST['address']);
-    $school = toHtmlSpecailChars($_POST['school']);
-    $Course = toHtmlSpecailChars($_POST['Course']);
-    $dob = toHtmlSpecailChars($_POST['dob']);
-    // $resume = fileInputs($_POST['resume']);
+    try {
 
-    print_r($_POST);
+      $fname = toHtmlSpecailChars($_POST['fname']);
+      $mname = toHtmlSpecailChars($_POST['mname']);
+      $lname = toHtmlSpecailChars($_POST['lname']);
+      $address = toHtmlSpecailChars($_POST['address']);
+      $school = toHtmlSpecailChars($_POST['school']);
+      $Course = toHtmlSpecailChars($_POST['Course']);
+      $dob = toHtmlSpecailChars($_POST['dob']);
+      $resume = empty($_FILES['resume']['name']) ? "" : fileInputs($_FILES['resume']);
 
-  } catch (Exception $ex) {
-    echo $ex->getMessage();
+      $model->update($fname, $mname, $lname, $dob, $Course, $school, $address, $resume);
+
+    } catch (Exception $ex) {
+      echo $ex->getMessage();
+    }
+
   }
 
-}
+  ?>
 
-?>
-
-
-<main>
   <section>
     <div class="container-fluid" style="width: 800px;">
       <h2>Update Applicant</h2>
-      <form action="/applicants/update/<?= $id ?>" method="post">
+      <form action="/applicants/update/<?= $id ?>" enctype="multipart/form-data" method="post">
         <div class="row">
           <div class="col">
             <label for="fname" class="form-label">First Name</label>
@@ -68,15 +72,14 @@ if (isset($_POST['UPDATE_APPLICANTS'])) {
           </div>
           <div class="col">
             <label for="dob" class="form-label">Date of Birth</label>
-            <input required value="<?= $model->getBirthdate(); ?>" type="date" id="dob" name="dob"
+            <input required value=<?= $model->getBirthdate(); ?> type="date" id="dob" name="dob"
               class="form-control border-black" />
           </div>
         </div>
         <div class="row">
           <div class="col">
             <label for="resume" class="form-label">Resume</label>
-            <input type="file" id="resume" name="resume"
-              class="form-control border-black" />
+            <input type="file" id="resume" name="resume" class="form-control border-black" />
           </div>
         </div>
 

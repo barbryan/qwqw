@@ -46,6 +46,7 @@ function toHtmlSpecailChars($input)
 
 function fileInputs($file)
 {
+
   if (empty($file)) {
     throw new ErrorException("Invalid inputs");
   }
@@ -85,65 +86,18 @@ function fileInputs($file)
       if ($file_ext == "pdf") {
 
         // No need to convert, just echo a success message
-        return "The file " . $file_name . " was uploaded and saved as " . $new_name;
+        // echo "The file " . $file_name . " was uploaded and saved as " . $new_name;
+        return basename($upload_path);
       } else if ($file_ext == "png" || $file_ext == "jpg" || $file_ext == "jpeg") {
 
-        // Create a new instance of Dompdf
-        $dompdf = new \Dompdf\Dompdf();
-
-        // Load the HTML content from the image tag
-        $html = "<img src='$upload_path'>";
-
-        // Render the HTML as PDF using render() method
-        $dompdf->loadHtml($html);
-        $dompdf->render();
-
-        // Save the PDF to a new file
-        $pdf_path = $upload_dir . uniqid() . ".pdf";
-        file_put_contents($pdf_path, $dompdf->output());
-
-        // Delete the original and image files
-        unlink($upload_path);
+        // Echo a success message
+        // echo "The file " . $file_name . " was uploaded as " . $new_name;
+        return basename($upload_path);
+      } else {
 
         // Echo a success message
-        return "The file " . $file_name . " was uploaded and converted to PDF as " . basename($pdf_path);
-      } else {
-        // Convert the file to PDF using Dompdf
-        try {
-
-          // Load the document from the file
-          $document = $phpWord->loadTemplate($upload_path);
-
-          // Save the document as an image using saveAsImage() method
-          $image_path = $upload_dir . uniqid() . ".png";
-          $image_path = $document->saveAsImage($image_path);
-          //$document->saveAs($image_path);
-
-          // Create a new instance of Dompdf
-          $dompdf = new \Dompdf\Dompdf();
-
-          // Load the HTML content from the image tag
-          $html = "<img src='$image_path'>";
-
-          // Render the HTML as PDF using render() method
-          $dompdf->loadHtml($html);
-          $dompdf->render();
-
-          // Save the PDF to a new file
-          $pdf_path = $upload_dir . uniqid() . ".pdf";
-          file_put_contents($pdf_path, $dompdf->output());
-
-          // Delete the original and image files
-          unlink($upload_path);
-          unlink($image_path);
-
-          // Echo a success message
-          return "The file " . $file_name . " was uploaded and converted to PDF as " . basename($pdf_path);
-        } catch (Exception $e) {
-
-          // Echo an error message
-          throw new ErrorException("An error occurred while converting the file to PDF: " . $e->getMessage());
-        }
+        // echo "The file " . $file_name . " was uploaded and converted to PDF as " . $new_name;
+        return basename($upload_path);
       }
     } else {
 
@@ -159,7 +113,7 @@ function fileInputs($file)
   }
 
 
-  // return $file;
+  // return basename($upload_path);
 }
 
 
