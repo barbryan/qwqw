@@ -25,6 +25,8 @@ class AccountModel extends Database
 
   private $con;
 
+  private $error;
+
   public function __construct()
   {
     $this->con = parent::connect();
@@ -74,13 +76,13 @@ class AccountModel extends Database
 
       $row = $stmt->fetch();
 
-      $this->fname = $row['fname'];
-      $this->lname = $row['mname'];
-      $this->mname = $row['lname'];
-      $this->user = $row['username'];
-      $this->pass = $row['password'];
-      $this->type = $row['type'];
-      $this->id = $row['id'];
+      $this->setFname($row['fname']);
+      $this->setLname($row['mname']);
+      $this->setMname($row['lname']);
+      $this->setUser($row['username']);
+      $this->setPass($row['password']);
+      $this->setType($row['type']);
+      $this->setId($row['id']);
 
     } catch (Exception $ex) {
       throw new ErrorException($ex->getMessage());
@@ -101,7 +103,7 @@ class AccountModel extends Database
     try {
 
       $stmt = $this->con->prepare("SELECT * FROM accounts WHERE username=:user AND id!=:id");
-      $stmt->bindParam(':user', $user);
+      $stmt->bindParam(':user', $username);
       $stmt->bindParam(':id', $id);
       if (!$stmt->execute()) {
         throw new ErrorException("Login failed");
@@ -109,11 +111,10 @@ class AccountModel extends Database
       if ($stmt->rowCount() > 0) {
         throw new ErrorException("User already exist");
       }
+      
+      if (!empty($password) && !$password == $this->getPass()) {
+        $password = password_hash($password, PASSWORD_BCRYPT, ['cost' => 8]);
 
-      $password = password_hash($password, PASSWORD_BCRYPT, ['cost' => 8]);
-
-
-      if (!$password == $this->getPass()) {
         $stmt = $this->con->prepare("UPDATE accounts SET fname=:fname, mname=:mname, lname=:lname, username=:user, password=:pass, type=:type WHERE id=:id ");
 
         $stmt->bindParam(':pass', $password);
@@ -197,6 +198,13 @@ class AccountModel extends Database
   {
 
     try {
+
+      self::getById($id);
+
+      if ($_SESSION['uid'] == self::getId()) {
+        throw new ErrorException("User is currently active");
+      }
+
       $stmt = $this->con->prepare("DELETE FROM accounts WHERE id=:id");
       $stmt->bindParam(':id', $id);
       if (!$stmt->execute()) {
@@ -207,8 +215,10 @@ class AccountModel extends Database
         throw new ErrorException("User not found");
       }
 
+      return true;
+
     } catch (Exception $ex) {
-      throw new ErrorException($ex->getMessage());
+      self::setError($ex->getMessage());
     }
 
   }
@@ -358,4 +368,20 @@ class AccountModel extends Database
     $this->con = $con;
     return $this;
   }
+
+	/**
+	 * @return mixed
+	 */
+	public function getError() {
+		return $this->error;
+	}
+	
+	/**
+	 * @param mixed $error 
+	 * @return self
+	 */
+	public function setError($error): self {
+		$this->error = $error;
+		return $this;
+	}
 }

@@ -13,15 +13,18 @@
     integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
   <style>
+    html {
+      min-width: 1200px;;
+    }
     body {
       position: relative;
 
       min-height: 100vh;
-      padding: 1rem;
-      overflow: hidden;
+      /* padding: 1rem; */
+      overflow: auto;
 
       display: grid;
       grid-template:

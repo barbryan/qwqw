@@ -1,30 +1,32 @@
+<main  style="
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;">
 
+    <?php
 
-<main>
+    if (isset($_POST['UPDATE_ACCOUNT'])) {
+        try {
+            $fname = toHtmlSpecailChars($_POST['fname']);
+            $mname = toHtmlSpecailChars($_POST['mname']);
+            $lname = toHtmlSpecailChars($_POST['lname']);
+            $username = toHtmlSpecailChars($_POST['user']);
+            $password = empty($_POST['pass']) ? "" : toHtmlSpecailChars($_POST['pass']);
+            $type = toHtmlSpecailChars($_POST['type']);
+
+            $model->update($fname, $mname, $lname, $username, $password, $type, $id);
+
+            print_r($_POST);
+
+        } catch (Exception $ex) {
+            echo '<span class="bg-danger bg-opacity-25 p-2">' . $ex->getMessage() . '</span>';
+        }
+    }
+
+    ?>
     <section>
         <div class="container-fluid" style="width: 500px;">
-
-            <?php
-
-            if (isset($_POST['UPDATE_ACCOUNT'])) {
-                try {
-                    $fname = toHtmlSpecailChars($_POST['fname']);
-                    $mname = toHtmlSpecailChars($_POST['mname']);
-                    $lname = toHtmlSpecailChars($_POST['lname']);
-                    $username = toHtmlSpecailChars($_POST['user']);
-                    $password = toHtmlSpecailChars($_POST['pass']);
-                    $type = toHtmlSpecailChars($_POST['type']);
-
-                    $model->update($fname, $mname, $lname, $username, $password, $type, $id);
-
-                    print_r($_POST);
-
-                } catch (Exception $ex) {
-                    echo '<span class="bg-danger bg-opacity-25 p-2">' . $ex->getMessage() . '</span>';
-                }
-            }
-
-            ?>
 
             <h2>Update Account</h2>
             <form action="/accounts/update/<?= $model->getId(); ?>" method="post">
@@ -55,7 +57,7 @@
                 <div class="row">
                     <div class="col">
                         <label for="pass" class="form-label">Password</label>
-                        <input required value="<?= $model->getPass(); ?>" type="password" id="pass" name="pass"
+                        <input type="password" id="pass" name="pass"
                             class="form-control border-black" />
                     </div>
                 </div>

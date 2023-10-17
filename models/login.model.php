@@ -32,6 +32,8 @@ class LoginModel extends Database
     $password
   ) {
 
+    $error = "";
+
     try {
       $stmt = $this->con->prepare("SELECT * FROM accounts WHERE username=:username");
       $stmt->bindParam(':username', $username);
@@ -48,6 +50,7 @@ class LoginModel extends Database
         throw new ErrorException("Incorrect password");
       }
 
+      $_SESSION['uid'] = $row['id'];
       $_SESSION['user'] = $row['username'];
       $_SESSION['type'] = $row['type'];
 

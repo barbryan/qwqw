@@ -1,25 +1,30 @@
-<?php
+<main style="
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;">
 
-if (isset($_POST['CREATE_ACCOUNT'])) {
-  try {
-    $fname = toHtmlSpecailChars($_POST['fname']);
-    $mname = toHtmlSpecailChars($_POST['mname']);
-    $lname = toHtmlSpecailChars($_POST['lname']);
-    $username = toHtmlSpecailChars($_POST['user']);
-    $password = toHtmlSpecailChars($_POST['pass']);
-    $type = toHtmlSpecailChars($_POST['type']);
+  <?php
 
-    $model->createUser($fname, $mname, $lname, $username, $password, $type);
+  if (isset($_POST['CREATE_ACCOUNT'])) {
+    try {
+      $fname = toHtmlSpecailChars($_POST['fname']);
+      $mname = toHtmlSpecailChars($_POST['mname']);
+      $lname = toHtmlSpecailChars($_POST['lname']);
+      $username = toHtmlSpecailChars($_POST['user']);
+      $password = toHtmlSpecailChars($_POST['pass']);
+      $type = toHtmlSpecailChars($_POST['type']);
 
-    
-  } catch (Exception $ex) {
-    echo '<span class="bg-danger bg-opacity-25 p-2">' . $ex->getMessage() . '</span>';
+      $model->createUser($fname, $mname, $lname, $username, $password, $type);
+
+
+    } catch (Exception $ex) {
+      echo '<span class="bg-danger bg-opacity-25 p-2">' . $ex->getMessage() . '</span>';
+    }
   }
-}
 
-?>
+  ?>
 
-<main>
   <section>
     <div class="container-fluid" style="width: 500px;">
 

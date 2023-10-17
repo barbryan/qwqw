@@ -50,6 +50,7 @@ function toHtmlSpecailChars($input)
 
 function fileInputs($file)
 {
+
   if (empty($file)) {
     throw new ErrorException("Invalid inputs");
   }
@@ -89,9 +90,11 @@ function fileInputs($file)
       if ($file_ext == "pdf") {
 
         // No need to convert, just echo a success message
-        return "The file " . $file_name . " was uploaded and saved as " . $new_name;
+        // echo "The file " . $file_name . " was uploaded and saved as " . $new_name;
+        return basename($upload_path);
       } else if ($file_ext == "png" || $file_ext == "jpg" || $file_ext == "jpeg") {
 
+<<<<<<< HEAD
         // Create a new instance of Dompdf
         $dompdf = new Dompdf();
 
@@ -139,6 +142,16 @@ function fileInputs($file)
           // Echo an error message
           throw new ErrorException("An error occurred while converting the file to PDF: " . $e->getMessage());
         }
+=======
+        // Echo a success message
+        // echo "The file " . $file_name . " was uploaded as " . $new_name;
+        return basename($upload_path);
+      } else {
+
+        // Echo a success message
+        // echo "The file " . $file_name . " was uploaded and converted to PDF as " . $new_name;
+        return basename($upload_path);
+>>>>>>> afe0ed3f2bb31e1f38b34cbf904378bf3c51fe53
       }
     } else {
 
@@ -154,7 +167,7 @@ function fileInputs($file)
   }
 
 
-  // return $file;
+  // return basename($upload_path);
 }
 
 
@@ -186,6 +199,10 @@ function fileli()
 
   // Output the PDF document to a file
   $pdf->Output('F', $pdfPath);
+<<<<<<< HEAD
 
   // require the necessary libraries
 }
+=======
+}
+>>>>>>> afe0ed3f2bb31e1f38b34cbf904378bf3c51fe53

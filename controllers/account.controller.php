@@ -37,8 +37,12 @@ class Account
   {
     include('./models/account.model.php');
     $model = new AccountModel();
-    $model->delete($id);
-    header('location: /accounts');
+    if ($model->delete($id)) {
+      header('location: /accounts');
+      exit();
+    }
+    $content = include('./pages/accounts/delete.php');
+    include('./pages/accounts/_layout.php');
     exit();
   }
 }

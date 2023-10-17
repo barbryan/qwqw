@@ -20,7 +20,7 @@
       position: relative;
 
       height: 100vh;
-      padding: 1rem;
+      /* padding: 1rem; */
       overflow: hidden;
 
       display: grid;
