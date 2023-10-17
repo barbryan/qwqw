@@ -1,4 +1,5 @@
 <?php
+
 use Dompdf\Dompdf;
 use PhpOffice\PhpWord\IOFactory;
 
@@ -88,70 +89,13 @@ function fileInputs($file)
 
       // Check if the file is a PDF or not
       if ($file_ext == "pdf") {
-
         // No need to convert, just echo a success message
         // echo "The file " . $file_name . " was uploaded and saved as " . $new_name;
         return basename($upload_path);
       } else if ($file_ext == "png" || $file_ext == "jpg" || $file_ext == "jpeg") {
-
-<<<<<<< HEAD
-        // Create a new instance of Dompdf
-        $dompdf = new Dompdf();
-
-        // Load the HTML content from the image tag
-        $html = "<img src='$upload_path'>";
-
-        // Render the HTML as PDF using render() method
-        $dompdf->loadHtml($html);
-        $dompdf->render();
-
-        // Save the PDF to a new file
-        $pdf_path = $upload_dir . uniqid() . ".pdf";
-        file_put_contents($pdf_path, $dompdf->output());
-
-        // Delete the original and image files
-        unlink($upload_path);
-
-        // Echo a success message
-        return "The file " . $file_name . " was uploaded and converted to PDF as " . basename($pdf_path);
-      } else {
-        // Convert the file to PDF using Dompdf
-        try {
-
-          // Load the document from the file
-          $document = IOFactory::load($upload_path);
-
-          // Save the document as an image using saveAsImage() method
-          $image_path = $upload_dir . uniqid() . ".png";
-          $dompdf = new Dompdf();
-          $dompdf->loadHtml($document->getHtmlConverter()->convertToHtml());
-          $dompdf->render();
-
-          // Save the PDF to a new file
-          $pdf_path = $upload_dir . uniqid() . ".pdf";
-          file_put_contents($pdf_path, $dompdf->output());
-
-          // Delete the original and image files
-          unlink($upload_path);
-          unlink($image_path);
-
-          // Echo a success message
-          return "The file " . $file_name . " was uploaded and converted to PDF as " . basename($pdf_path);
-        } catch (Exception $e) {
-
-          // Echo an error message
-          throw new ErrorException("An error occurred while converting the file to PDF: " . $e->getMessage());
-        }
-=======
-        // Echo a success message
-        // echo "The file " . $file_name . " was uploaded as " . $new_name;
         return basename($upload_path);
-      } else {
-
-        // Echo a success message
-        // echo "The file " . $file_name . " was uploaded and converted to PDF as " . $new_name;
+      } else if ($file_ext == "doc" || $file_ext == "docx") {
         return basename($upload_path);
->>>>>>> afe0ed3f2bb31e1f38b34cbf904378bf3c51fe53
       }
     } else {
 
@@ -199,10 +143,4 @@ function fileli()
 
   // Output the PDF document to a file
   $pdf->Output('F', $pdfPath);
-<<<<<<< HEAD
-
-  // require the necessary libraries
 }
-=======
-}
->>>>>>> afe0ed3f2bb31e1f38b34cbf904378bf3c51fe53
