@@ -80,7 +80,7 @@
             <a href="/applicants" class="btn btn-danger w-100">Cancel</a>
           </div>
           <div class="col">
-            <input type="submit" name="CREATE_APPLICANTS" value="Submit" class="btn btn-success w-100" />
+            <input type="submit" name="CREATE_APPLICANTS" value="Create" class="btn btn-success w-100" />
           </div>
         </div>
 

@@ -77,7 +77,7 @@
             <a href="/accounts" class="btn btn-danger w-100">Cancel</a>
           </div>
           <div class="col">
-            <input type="submit" name="CREATE_ACCOUNT" value="Submit" class="btn btn-success w-100" />
+            <input type="submit" name="CREATE_ACCOUNT" value="Create" class="btn btn-success w-100" />
           </div>
         </div>
       </form>
