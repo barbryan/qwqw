@@ -218,7 +218,9 @@ class ApplicantModel extends Database
 
       if (file_exists("./uploads/".self::getResume())) {
         
-        return basename("./uploads/".self::getResume());
+        // return basename("./uploads/".self::getResume());
+
+        return ["resume" => basename("./uploads/".self::getResume()), "id" => self::getId() ];
       }
 
       header('location: /error');

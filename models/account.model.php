@@ -111,11 +111,10 @@ class AccountModel extends Database
       if ($stmt->rowCount() > 0) {
         throw new ErrorException("User already exist");
       }
+      
+      if (!empty($password) && !$password == $this->getPass()) {
+        $password = password_hash($password, PASSWORD_BCRYPT, ['cost' => 8]);
 
-      $password = password_hash($password, PASSWORD_BCRYPT, ['cost' => 8]);
-
-
-      if (!$password == $this->getPass()) {
         $stmt = $this->con->prepare("UPDATE accounts SET fname=:fname, mname=:mname, lname=:lname, username=:user, password=:pass, type=:type WHERE id=:id ");
 
         $stmt->bindParam(':pass', $password);

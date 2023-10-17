@@ -27,17 +27,17 @@
 
             foreach ($model->getAll() as $account) {
 
-              $name = $account['fname']." ".$account['mname']." ".$account['lname'];
+              $name = $account['lname'] . ", " . $account['fname'] . " " . $account['mname'];
 
               echo '<tr>';
-              echo '  <td>'.$count++.'</td>';
-              echo '  <td>'.$name.'</td>';
-              echo '  <td>'.$account['username'].'</td>';
-              echo '  <td>'.$account['type'].'</td>';
+              echo '  <td>' . $count++ . '</td>';
+              echo '  <td>' . $name . '</td>';
+              echo '  <td>' . $account['username'] . '</td>';
+              echo '  <td>' . $account['type'] . '</td>';
               echo '  <td>';
               echo '    <div class="btn-group">';
-              echo '      <a href="/accounts/update/'.$account['id'].'" class="btn btn-sm btn-secondary"><i class="fas fa-regular fa-pen-to-square"></i></a>';
-              echo '      <a href="/accounts/delete/'.$account['id'].'" class="btn btn-sm btn-danger"><i class="fas fa-regular fa-trash"></i></a>';
+              echo '      <a href="/accounts/update/' . $account['id'] . '" class="btn btn-sm btn-secondary"><i class="fas fa-regular fa-pen-to-square"></i></a>';
+              echo '      <a href="/accounts/delete/' . $account['id'] . '" class="btn btn-sm btn-danger"><i class="fas fa-regular fa-trash"></i></a>';
               echo '    </div>';
               echo '  </td>';
               echo '</tr>';

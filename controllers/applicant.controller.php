@@ -45,9 +45,12 @@ class Applicant
     include('./models/applicant.model.php');
     $model = new ApplicantModel();
     $file = $model->resume($id);
-    $type = ($_SESSION['type'] == 'ADMIN') ? include('./pages/nav.php') : "";
-    $usertype = (empty($type)) ? ' |  <a class="nav-link" href="/logout"><i class="fas fa-regular fa-right-from-bracket me-2"></i>Logout</a>' : "";
-    $content = include('./pages/applicants/view.php');
-    include('./pages/applicants/_layout.php');
+
+    echo json_encode($model->resume($id));
+    exit();
+    // $type = ($_SESSION['type'] == 'ADMIN') ? include('./pages/nav.php') : "";
+    // $usertype = (empty($type)) ? ' |  <a class="nav-link" href="/logout"><i class="fas fa-regular fa-right-from-bracket me-2"></i>Logout</a>' : "";
+    // $content = include('./pages/applicants/view.php');
+    // include('./pages/applicants/_layout.php');
   }
 }
