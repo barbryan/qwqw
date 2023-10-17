@@ -96,11 +96,16 @@ class AccountModel extends Database
     $lname,
     $username,
     $password,
+    $rpassword,
     $type,
     $id
   ) {
 
     try {
+
+      if ($password != $rpassword) {
+        throw new ErrorException("Password does not match");
+      }
 
       $stmt = $this->con->prepare("SELECT * FROM accounts WHERE username=:user AND id!=:id");
       $stmt->bindParam(':user', $username);
@@ -134,8 +139,8 @@ class AccountModel extends Database
         throw new ErrorException("Update failed");
       }
 
-      throw new ErrorException("Success");
-
+      header('location: /accounts');
+      exit();
 
     } catch (Exception $ex) {
       throw new ErrorException($ex->getMessage());
@@ -150,10 +155,16 @@ class AccountModel extends Database
     $lname,
     $username,
     $password,
+    $rpassword,
     $type
   ) {
 
     try {
+
+      if ($password != $rpassword) {
+        throw new ErrorException("Password does not match");
+      }
+
       $stmt = $this->con->prepare("SELECT * FROM accounts WHERE username=:username");
       $stmt->bindParam(':username', $username);
       if (!$stmt->execute()) {
@@ -176,9 +187,6 @@ class AccountModel extends Database
       if (!$stmt->execute()) {
         throw new ErrorException("Login failed");
       }
-
-
-      //throw new ErrorException("Login Success");
 
       header('location: /accounts');
       exit();

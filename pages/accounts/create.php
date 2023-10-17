@@ -13,9 +13,10 @@
       $lname = toHtmlSpecailChars($_POST['lname']);
       $username = toHtmlSpecailChars($_POST['user']);
       $password = toHtmlSpecailChars($_POST['pass']);
+      $rpassword = toHtmlSpecailChars($_POST['rpass']);
       $type = toHtmlSpecailChars($_POST['type']);
 
-      $model->createUser($fname, $mname, $lname, $username, $password, $type);
+      $model->createUser($fname, $mname, $lname, $username, $password, $rpassword, $type);
 
 
     } catch (Exception $ex) {
@@ -54,6 +55,12 @@
           <div class="col">
             <label for="pass" class="form-label">Password</label>
             <input required type="password" id="pass" name="pass" class="form-control border-black" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <label for="rpass" class="form-label">Retype Password</label>
+            <input required type="password" id="rpass" name="rpass" class="form-control border-black" />
           </div>
         </div>
         <div class="row">

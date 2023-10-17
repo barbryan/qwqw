@@ -16,7 +16,7 @@
     <div class="container-fluid">
       <table id="myTable" class="table table-striped">
         <thead>
-          <th>#</th>
+          <th style="width: 2rem;">#</th>
           <th>Last Name</th>
           <th>First Name</th>
           <th>Middle Name</th>
@@ -25,14 +25,14 @@
           <th>School</th>
           <th>Address</th>
           <th>Last Update</th>
-          <th>Action</th>
+          <th style="width: 100px;">Action</th>
         </thead>
         <tbody class="overflowy">
 
           <?php
 
           //print_r($model->getAll());
-          
+
           $count = 1;
           foreach ($model->getAll() as $applicant) {
 
@@ -40,7 +40,7 @@
             $mod = date("M-d-Y h:i:s", strtotime($applicant['datemodified']));
 
             echo '<tr>';
-            echo '  <td>' . $count++ . '</td>';
+            echo '  <td style="width: 2rem;">' . $count++ . '</td>';
             //echo '  <td>'.$applicant['id'].'</td>';
             echo '  <td>' . $applicant['lname'] . '</td>';
             echo '  <td>' . $applicant['fname'] . '</td>';
@@ -51,11 +51,11 @@
             echo '  <td>' . $applicant['address'] . '</td>';
             //echo '  <td>'.$applicant['resume'].'</td>';
             echo '  <td>' . $mod . '</td>';
-            echo '  <td>';
+            echo '  <td style="width: 100px;">';
             echo '    <div class="btn-group">';
             echo '      <button type="button" rid="' . $applicant["id"] . '" class="view btn btn-sm btn-primary"><i class="fas fa-regular fa-eye"></i></button>';
             echo '      <a href="/applicants/update/' . $applicant["id"] . '" class="btn btn-sm btn-secondary"><i class="fas fa-regular fa-pen-to-square"></i></a>';
-            echo '      <a href="/applicants/delete/' . $applicant["id"] . '" class="btn btn-sm btn-danger"><i class="fas fa-regular fa-trash"></i></a>';
+            echo '      <button type="button" rid="' . $applicant["id"] . '" class="delete btn btn-sm btn-danger"><i class="fas fa-regular fa-trash"></i></button>';
             echo '    </div>';
             echo '  </td>';
             echo '</tr>';
@@ -71,9 +71,8 @@
 
 
 <!-- Modal -->
-<div class="modal modal-lg fade" id="resumeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-  aria-labelledby="resumeModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+<div class="modal modal-lg fade" id="resumeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="resumeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="resumeModalLabel">Modal title</h1>
@@ -81,25 +80,33 @@
       </div>
       <div class="modal-body">
         <div class="container-fluid">
-          <?php
-
-          $file = explode(".", $file);
-
-          if ($file[1] == "pdf") {
-            echo '<object data="/uploads/' . implode(".", $file) . '" type="application/pdf" style="width: 100%; min-height:500px;"></object>';
-          } else if ($file[1] == "png" || $file[1] == "jpg" || $file[1] == "jpeg") {
-            echo '<img src="/uploads/' . implode(".", $file) . '" alt="">';
-          } else if ($file[1] == "docx" || $file[1] == "doc") {
-            echo '<iframe src="/uploads/' . implode(".", $file) . '" frameborder="0" style="display: none;"></iframe>';
-            echo "Resume of " . $model->getFname() . " was downloaded";
-          }
-
-          ?>
+          <div id="fileContainer">
+          </div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="notifModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="notifModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="notifModalLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div id="fileContainer">
+            <span>Confirm delete</span>
+          </div>
+        </div>
+      </div>
+
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Understood</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <a href="" id="delete" class="btn btn-danger">Delete</a>
       </div>
     </div>
   </div>
@@ -107,8 +114,10 @@
 
 <script>
   const view = document.querySelectorAll('.view')
+  const deleteRecord = document.querySelectorAll('.delete')
+
   view.forEach(btn => {
-    btn.addEventListener('click', function (e) {
+    btn.addEventListener('click', function(e) {
       e.preventDefault()
       var id = this.getAttribute("rid")
       fetch(`/applicants/view/${id}`)
@@ -117,10 +126,42 @@
         .catch(err => console.error(err))
 
       function loadData(data) {
-        $('#resumeModal').modal('show')
-        
+
+        document.getElementById('fileContainer').innerHTML = ""
+
+
+        var resume = data.resume
+        resume = resume.split('.')
+        var fileElem = "";
+        if (resume[1] == 'pdf') {
+          fileElem = document.createElement('object');
+          fileElem.data = `/uploads/${resume.join(".")}`;
+          fileElem.type = 'application/pdf';
+        } else if (resume[1] == 'png' || resume[1] == 'jpeg' || resume[1] == 'jpg') {
+          fileElem = document.createElement('img');
+          fileElem.src = `/uploads/${resume.join(".")}`;
+        } else if (resume[1] == 'doc' || resume[1] == 'docx') {
+          fileElem = document.createElement('iframe');
+          fileElem.setAttribute('src', `/uploads/${resume.join(".")}`);
+          fileElem.style.display = 'none';
+          spanElem = document.createElement('span');
+          spanElem.textContent = "The resume will be downloaded";
+          document.getElementById('fileContainer').appendChild(spanElem);
+        }
+        fileElem.style.width = '100%';
+        fileElem.style.minHeight = '500px';
+        document.getElementById('fileContainer').appendChild(fileElem);
+        $('#resumeModal').modal('show');
       }
     })
   })
 
+  deleteRecord.forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault()
+      var id = this.getAttribute("rid")
+      document.getElementById('delete').setAttribute('href', `/applicants/delete/${id}`)
+      $('#notifModal').modal('show')
+    })
+  })
 </script>

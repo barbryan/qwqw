@@ -84,9 +84,8 @@ class ApplicantModel extends Database
         throw new ErrorException("Failed");
       }
 
-      throw new ErrorException("Success");
-      // return "Success";
-
+      header('location: /applicants');
+      exit();
     } catch (Exception $ex) {
       throw new ErrorException($ex->getMessage());
     }
@@ -108,7 +107,7 @@ class ApplicantModel extends Database
       }
 
       $row = $stmt->fetch();
-      
+
 
       $this->setId($row['id']);
       $this->setFname($row['fname']);
@@ -119,7 +118,6 @@ class ApplicantModel extends Database
       $this->setSchool($row['school']);
       $this->setAddress($row['address']);
       $this->setResume($row['resume']);
-
     } catch (Exception $ex) {
       throw new ErrorException($ex->getMessage());
     }
@@ -155,7 +153,7 @@ class ApplicantModel extends Database
       $stmt->bindParam(':school', $school);
       $stmt->bindParam(':address', $address);
       $stmt->bindParam(':id', $id);
-      
+
       if (!$stmt->execute()) {
         throw new ErrorException("Update failed");
       }
@@ -163,11 +161,11 @@ class ApplicantModel extends Database
       self::setId($id);
 
       if (!empty($resume)) {
-        if (file_exists("./uploads/".self::getResume())) {
-          unlink("./uploads/".self::getResume());
+        if (file_exists("./uploads/" . self::getResume())) {
+          unlink("./uploads/" . self::getResume());
         }
       }
-      
+
       $this->setFname($fname);
       $this->setMname($mname);
       $this->setLname($lname);
@@ -175,11 +173,10 @@ class ApplicantModel extends Database
       $this->setCourse($course);
       $this->setSchool($school);
       $this->setAddress($address);
-      $this->setResume( empty($resume) ? $this->getResume() : $resume );
+      $this->setResume(empty($resume) ? $this->getResume() : $resume);
 
-      throw new ErrorException("Success");
-      // return "Success";
-
+      header('location: /applicants');
+      exit();
     } catch (Exception $ex) {
       throw new ErrorException($ex->getMessage());
     }
@@ -198,13 +195,12 @@ class ApplicantModel extends Database
         throw new ErrorException("Login failed");
       }
 
-      if (file_exists("./uploads/".self::getResume())) {
-        unlink("./uploads/".self::getResume());
+      if (file_exists("./uploads/" . self::getResume())) {
+        unlink("./uploads/" . self::getResume());
       }
-      
+
       header('location: /applicants');
       exit();
-
     } catch (Exception $ex) {
       throw new ErrorException($ex->getMessage());
     }
@@ -216,16 +212,15 @@ class ApplicantModel extends Database
 
       self::getById($id);
 
-      if (file_exists("./uploads/".self::getResume())) {
-        
+      if (file_exists("./uploads/" . self::getResume())) {
+
         // return basename("./uploads/".self::getResume());
 
-        return ["resume" => basename("./uploads/".self::getResume()), "id" => self::getId() ];
+        return ["resume" => basename("./uploads/" . self::getResume()), "id" => self::getId()];
       }
 
       header('location: /error');
-        exit();
-
+      exit();
     } catch (Exception $ex) {
       throw new ErrorException($ex->getMessage());
     }
@@ -304,84 +299,93 @@ class ApplicantModel extends Database
     return $this->resume;
   }
 
-	/**
-	 * @param mixed $fname 
-	 * @return self
-	 */
-	public function setFname($fname): self {
-		$this->fname = $fname;
-		return $this;
-	}
-	
-	/**
-	 * @param mixed $mname 
-	 * @return self
-	 */
-	public function setMname($mname): self {
-		$this->mname = $mname;
-		return $this;
-	}
-	
-	/**
-	 * @param mixed $lname 
-	 * @return self
-	 */
-	public function setLname($lname): self {
-		$this->lname = $lname;
-		return $this;
-	}
-	
-	/**
-	 * @param mixed $birthdate 
-	 * @return self
-	 */
-	public function setBirthdate($birthdate): self {
-		$this->birthdate = $birthdate;
-		return $this;
-	}
-	
-	/**
-	 * @param mixed $course 
-	 * @return self
-	 */
-	public function setCourse($course): self {
-		$this->course = $course;
-		return $this;
-	}
-	
-	/**
-	 * @param mixed $school 
-	 * @return self
-	 */
-	public function setSchool($school): self {
-		$this->school = $school;
-		return $this;
-	}
-	
-	/**
-	 * @param mixed $address 
-	 * @return self
-	 */
-	public function setAddress($address): self {
-		$this->address = $address;
-		return $this;
-	}
-	
-	/**
-	 * @param mixed $resume 
-	 * @return self
-	 */
-	public function setResume($resume): self {
-		$this->resume = $resume;
-		return $this;
-	}
+  /**
+   * @param mixed $fname 
+   * @return self
+   */
+  public function setFname($fname): self
+  {
+    $this->fname = $fname;
+    return $this;
+  }
 
-	/**
-	 * @param mixed $id 
-	 * @return self
-	 */
-	public function setId($id): self {
-		$this->id = $id;
-		return $this;
-	}
+  /**
+   * @param mixed $mname 
+   * @return self
+   */
+  public function setMname($mname): self
+  {
+    $this->mname = $mname;
+    return $this;
+  }
+
+  /**
+   * @param mixed $lname 
+   * @return self
+   */
+  public function setLname($lname): self
+  {
+    $this->lname = $lname;
+    return $this;
+  }
+
+  /**
+   * @param mixed $birthdate 
+   * @return self
+   */
+  public function setBirthdate($birthdate): self
+  {
+    $this->birthdate = $birthdate;
+    return $this;
+  }
+
+  /**
+   * @param mixed $course 
+   * @return self
+   */
+  public function setCourse($course): self
+  {
+    $this->course = $course;
+    return $this;
+  }
+
+  /**
+   * @param mixed $school 
+   * @return self
+   */
+  public function setSchool($school): self
+  {
+    $this->school = $school;
+    return $this;
+  }
+
+  /**
+   * @param mixed $address 
+   * @return self
+   */
+  public function setAddress($address): self
+  {
+    $this->address = $address;
+    return $this;
+  }
+
+  /**
+   * @param mixed $resume 
+   * @return self
+   */
+  public function setResume($resume): self
+  {
+    $this->resume = $resume;
+    return $this;
+  }
+
+  /**
+   * @param mixed $id 
+   * @return self
+   */
+  public function setId($id): self
+  {
+    $this->id = $id;
+    return $this;
+  }
 }

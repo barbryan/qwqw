@@ -13,9 +13,10 @@
             $lname = toHtmlSpecailChars($_POST['lname']);
             $username = toHtmlSpecailChars($_POST['user']);
             $password = empty($_POST['pass']) ? "" : toHtmlSpecailChars($_POST['pass']);
+            $rpassword = empty($_POST['rpass']) ? "" : toHtmlSpecailChars($_POST['rpass']);
             $type = toHtmlSpecailChars($_POST['type']);
 
-            $model->update($fname, $mname, $lname, $username, $password, $type, $id);
+            $model->update($fname, $mname, $lname, $username, $password, $rpassword, $type, $id);
 
             print_r($_POST);
 
@@ -58,6 +59,13 @@
                     <div class="col">
                         <label for="pass" class="form-label">Password</label>
                         <input type="password" id="pass" name="pass"
+                            class="form-control border-black" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label for="rpass" class="form-label">Retype Password</label>
+                        <input type="password" id="rpass" name="rpass"
                             class="form-control border-black" />
                     </div>
                 </div>
